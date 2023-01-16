@@ -1,4 +1,4 @@
-package br.com.matheusxreis.dogimages.domain.useCases
+package br.com.matheusxreis.dogimages.domain.useCases.implementations
 
 import br.com.matheusxreis.dogimages.domain.irepositories.GetRandomImageRepository
 
