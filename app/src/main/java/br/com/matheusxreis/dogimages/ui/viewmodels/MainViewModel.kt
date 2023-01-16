@@ -15,9 +15,12 @@ class MainViewModel:ViewModel() {
 
     lateinit private var getRandomImageUseCase: IGetRandomImageUseCase;
 
+
     var actualImageUrl by mutableStateOf("")
         private set;
     var lastImageUrl by mutableStateOf("")
+        private set;
+    var isLoading by mutableStateOf(false)
         private set;
 
     init {
@@ -25,13 +28,14 @@ class MainViewModel:ViewModel() {
     }
 
     fun getRandomImage(){
+        isLoading = true;
         viewModelScope.launch {
             var url = getRandomImageUseCase.execute()
             if(lastImageUrl.length>0) {
                 lastImageUrl = actualImageUrl;
             }
              actualImageUrl = url;
-
-       }
+            isLoading = false;
+        }
     }
 }

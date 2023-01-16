@@ -37,20 +37,27 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     var actualImageUrl = mainViewModel.actualImageUrl;
+    var isLoadingData = mainViewModel.isLoading;
+
 
     Column() {
-    if(actualImageUrl.length>0){
-        Text(text = "Actual image: ${mainViewModel.actualImageUrl}")
-        AsyncImage(
-            model=actualImageUrl,
-            contentDescription = null
-        )
-    }else {
-        Text(text="No image yet")
-    }
 
-    Button(onClick = { mainViewModel.getRandomImage() }) {
-        Text(text = "Buscar")
-    }
+       when(isLoadingData){
+            true -> Text("loading...................");
+            false -> {
+                if(actualImageUrl.length>0){
+                    Text(text = "Actual image: ${mainViewModel.actualImageUrl}")
+                    AsyncImage(
+                        model=actualImageUrl,
+                        contentDescription = null
+                    )
+                }else {
+                    Text(text="No image yet")
+                }
+                Button(onClick = { mainViewModel.getRandomImage() }) {
+                    Text(text = "Buscar")
+                }
+           }
+       }
     }
 }
