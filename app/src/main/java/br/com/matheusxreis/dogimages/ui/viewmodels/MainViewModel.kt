@@ -6,12 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.matheusxreis.dogimages.data.ImagesRepository
 import br.com.matheusxreis.dogimages.domain.useCases.IGetRandomImageUseCase
+import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel:ViewModel() {
 
-    lateinit var getRandomImageUseCase: IGetRandomImageUseCase;
+    lateinit private var getRandomImageUseCase: IGetRandomImageUseCase;
 
     var actualImageUrl by mutableStateOf("")
         private set;
@@ -19,7 +21,7 @@ class MainViewModel:ViewModel() {
         private set;
 
     init {
-
+        getRandomImageUseCase = GetRandomImageUseCase(ImagesRepository())
     }
 
     fun getRandomImage(){
