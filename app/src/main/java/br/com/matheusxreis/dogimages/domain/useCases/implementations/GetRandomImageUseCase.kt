@@ -1,10 +1,12 @@
 package br.com.matheusxreis.dogimages.domain.useCases.implementations
 
-import br.com.matheusxreis.dogimages.domain.irepositories.GetRandomImageRepository
+import br.com.matheusxreis.dogimages.domain.irepositories.IGetRandomImageRepository
+import br.com.matheusxreis.dogimages.domain.useCases.IGetRandomImageUseCase
 
-class GetRandomImageUseCase constructor(private val repository: GetRandomImageRepository){
+class GetRandomImageUseCase constructor(private val repository: IGetRandomImageRepository):
+    IGetRandomImageUseCase {
 
-    suspend fun execute():String{
+    override suspend fun execute():String{
         val result = repository.getRandomImageRepository()
         return result.url
     }
