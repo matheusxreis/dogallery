@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import br.com.matheusxreis.dogimages.domain.entities.Image
+import br.com.matheusxreis.dogimages.domain.irepositories.IGetImagesFromStorageRepository
 import br.com.matheusxreis.dogimages.domain.irepositories.ISaveImageInStorageRepository
 import br.com.matheusxreis.dogimages.utils.Constants
 import br.com.matheusxreis.dogimages.utils.DBHelper
 
-class ImageStorageRepository constructor(context:Context):ISaveImageInStorageRepository{
+class ImageStorageRepository constructor(context:Context):ISaveImageInStorageRepository, IGetImagesFromStorageRepository{
 
     lateinit var  helper: SQLiteOpenHelper;
     lateinit var database: SQLiteDatabase;
@@ -34,7 +35,7 @@ class ImageStorageRepository constructor(context:Context):ISaveImageInStorageRep
         )
     }
 
-    fun getImages(): List<Image> {
+    override suspend fun getImages(): List<Image> {
 
         val data = database.rawQuery("SELECT * FROM ${Constants.imagesTableName}", null)
         var list = listOf<Image>();
