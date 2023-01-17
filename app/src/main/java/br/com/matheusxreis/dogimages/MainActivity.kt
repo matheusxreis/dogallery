@@ -23,6 +23,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.matheusxreis.dogimages.ui.theme.DogImagesTheme
@@ -59,7 +61,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             true -> CircularProgressIndicator();
             false -> {
                 if(actualImageUrl.length>0){
-                    Text(text = "Actual image: ${mainViewModel.actualImageUrl}")
+                    
                     Spacer(modifier = Modifier.height(7.dp))
                     AsyncImage(
                         model=actualImageUrl,
@@ -74,7 +76,11 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                             )
                     )
                 }else {
-                    Text(text="No image yet")
+                    Text(text = stringResource(id = R.string.sad_today),
+                    fontWeight = FontWeight.Bold
+                    )
+                    Text(text = stringResource(id = R.string.try_dog_images),
+                    fontWeight = FontWeight.Light)
                 }
                
            }
@@ -83,12 +89,14 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     MyButton(onClick = { mainViewModel.getRandomImage() },
         enabled = !isLoadingData,
         icon = Icons.Rounded.Search,
-        text = if(actualImageUrl.length>0) "Search Again".uppercase() else "Search".uppercase()
+        text = if(actualImageUrl.length>0) stringResource(id = R.string.search_again).uppercase() else stringResource(
+            id = R.string.search
+        ).uppercase()
     )
 
     if(lastImageUrl.length>0){
         MyButton(onClick = { mainViewModel.comeBackImage() },
-            text = "Come back image",
+            text = stringResource(id = R.string.come_back_image),
             enabled = !isLoadingData,
             secondary = true,
             icon = Icons.Rounded.ArrowBack
