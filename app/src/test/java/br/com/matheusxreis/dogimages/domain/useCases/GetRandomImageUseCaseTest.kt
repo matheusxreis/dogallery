@@ -1,5 +1,6 @@
 package br.com.matheusxreis.dogimages.domain.useCases
 
+import android.media.Image
 import br.com.matheusxreis.dogimages.domain.entities.ImageData
 import br.com.matheusxreis.dogimages.domain.irepositories.IGetRandomImageRepository
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
@@ -21,13 +22,16 @@ class GetRandomImageUseCaseTest {
     //then -> the result should be this
 
     private val correctUrl = "https://fakeUrl.com.br"
+    private val correctResponse = Response.success(200, ImageData(correctUrl))
+    private val emptyStringResponse = Response.success(200, ImageData(""))
+
 
     @Test
     fun getRandomImageUseCase_correctCase_returnsUrl() = runTest{
         //given
        val fakeRepository = object: IGetRandomImageRepository {
-            override suspend fun getRandomImageRepository(): ImageData {
-                return ImageData(correctUrl)
+            override suspend fun getRandomImageRepository(): Response<ImageData> {
+                return correctResponse
             }
         }
         val sut = GetRandomImageUseCase(fakeRepository)
@@ -41,8 +45,8 @@ class GetRandomImageUseCaseTest {
     fun getRandomImageUseCase_emptyUrl_returnsError() {
         // given
         val fakeRepository = object: IGetRandomImageRepository {
-            override suspend fun getRandomImageRepository(): ImageData {
-                return ImageData("");
+            override suspend fun getRandomImageRepository(): Response<ImageData> {
+                return emptyStringResponse
             }
         }
         val sut = GetRandomImageUseCase(fakeRepository)
@@ -60,7 +64,7 @@ class GetRandomImageUseCaseTest {
     fun getRandomImageUseCase_repository_calledOneTime() = runTest {
        //given
         val fakeRepository: IGetRandomImageRepository = mock()
-        whenever(fakeRepository.getRandomImageRepository()).doReturn(ImageData(correctUrl))
+        whenever(fakeRepository.getRandomImageRepository()).doReturn(correctResponse)
         val sut = GetRandomImageUseCase(fakeRepository)
         //when
         sut.execute()
@@ -72,7 +76,7 @@ class GetRandomImageUseCaseTest {
     fun getRandomImageUseCase_repositoryThrows_returnsThrows() {
         // given
         val fakeRepository = object: IGetRandomImageRepository {
-            override suspend fun getRandomImageRepository(): ImageData {
+            override suspend fun getRandomImageRepository(): Response<ImageData> {
                 throw Exception()
             }
         }
