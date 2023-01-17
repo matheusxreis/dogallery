@@ -14,7 +14,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Button
@@ -64,11 +63,9 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     var isConnected = mainViewModel.isConnected;
 
 
-
     Column(modifier = Modifier.padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
-
         if(!isConnected){
             Row(
                 verticalAlignment = Alignment.CenterVertically,
