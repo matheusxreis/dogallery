@@ -11,6 +11,7 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import retrofit2.Response
 
 class GetRandomImageUseCaseTest {
     //given -> my class
@@ -65,5 +66,22 @@ class GetRandomImageUseCaseTest {
         sut.execute()
         //then
         verify(fakeRepository, times(1)).getRandomImageRepository()
+    }
+
+    @Test
+    fun getRandomImageUseCase_repositoryThrows_returnsThrows() {
+        // given
+        val fakeRepository = object: IGetRandomImageRepository {
+            override suspend fun getRandomImageRepository(): ImageData {
+                throw Exception()
+            }
+        }
+        val sut = GetRandomImageUseCase(fakeRepository)
+        //when and then
+        assertThrows(Exception::class.java){
+            runTest {
+                sut.execute()
+            }
+        }
     }
 }
