@@ -11,14 +11,16 @@ import androidx.lifecycle.viewModelScope
 import br.com.matheusxreis.dogimages.data.repositories.ImageStorageRepository
 import br.com.matheusxreis.dogimages.data.repositories.ImagesRepository
 import br.com.matheusxreis.dogimages.domain.useCases.IGetRandomImageUseCase
+import br.com.matheusxreis.dogimages.domain.useCases.ISaveImageInStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
+import br.com.matheusxreis.dogimages.domain.useCases.implementations.SaveImageInStorageUseCase
 import br.com.matheusxreis.dogimages.utils.Network
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application):AndroidViewModel(application) {
 
     lateinit private var getRandomImageUseCase: IGetRandomImageUseCase;
-    lateinit private var storageRepository: ImageStorageRepository;
+    lateinit private var saveImageInStorageUseCase: ISaveImageInStorageUseCase;
 
 
     var actualImageUrl by mutableStateOf("")
@@ -30,9 +32,13 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
     var isConnected by mutableStateOf(true)
         private set;
 
+    var imageWasSaved by mutableStateOf(true)
+        private set;
+
     init {
         getRandomImageUseCase = GetRandomImageUseCase(ImagesRepository())
-        storageRepository = ImageStorageRepository(context = application)
+
+        saveImageInStorageUseCase = SaveImageInStorageUseCase(ImageStorageRepository(application))
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -62,7 +68,9 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
     }
 
     fun saveImageInStorage(url:String){
-            storageRepository.saveImage(url)
-            storageRepository.getImages()
+        viewModelScope.launch {
+            imageWasSaved = !imageWasSaved
+            imageWasSaved = saveImageInStorageUseCase.execute(url)
+        }
     }
 }

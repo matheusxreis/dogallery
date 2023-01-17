@@ -21,7 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,7 +62,14 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     var lastImageUrl = mainViewModel.lastImageUrl;
     var isLoadingData = mainViewModel.isLoading;
     var isConnected = mainViewModel.isConnected;
+    var imageWasSaved = mainViewModel.imageWasSaved;
 
+    var savingError by remember {
+        mutableStateOf(false)   
+    }
+    LaunchedEffect(imageWasSaved){
+        savingError = !imageWasSaved
+    }
 
     Column(modifier = Modifier.padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -87,7 +94,9 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             );
             false -> {
                 if(actualImageUrl.length>0){
-
+                    Row(){
+                        Text(text = "Amount of puppies saved: ${0}")
+                    }
                     Spacer(modifier = Modifier.height(7.dp))
                     AsyncImage(
                         model=actualImageUrl,
@@ -116,6 +125,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                
            }
        }
+
     Spacer(modifier = Modifier.height(7.dp))
     MyButton(onClick = { mainViewModel.getRandomImage() },
         enabled = !isLoadingData,
@@ -125,7 +135,9 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
         ).uppercase()
     )
     MyButton(onClick = { mainViewModel.saveImageInStorage(actualImageUrl) },
-        text = "Save", icon = Icons.Rounded.Star, enabled = true)
+        text = if(savingError) "Try again" else "Save",
+        icon = if(savingError) Icons.Rounded.Refresh else Icons.Rounded.Star,
+        enabled = true)
 
     if(lastImageUrl.length>0){
         MyButton(onClick = { mainViewModel.comeBackImage() },
@@ -135,6 +147,8 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             icon = Icons.Rounded.ArrowBack
             )
     }
+        
+
     }
 }
 
