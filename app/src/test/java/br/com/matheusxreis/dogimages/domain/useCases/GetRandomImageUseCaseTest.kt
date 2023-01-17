@@ -31,5 +31,22 @@ class GetRandomImageUseCaseTest {
         assertEquals(result, correctUrl)
     }
 
+    @Test
+    fun getRandomImageUseCase_emptyUrl_returnsError() {
+        // given
+        val fakeRepository = object: IGetRandomImageRepository {
+            override suspend fun getRandomImageRepository(): ImageData {
+                return ImageData("");
+            }
+        }
+        val sut = GetRandomImageUseCase(fakeRepository)
+        //when and then
+        val result = assertThrows(
+            Exception::class.java)  {
+            runTest {
+                sut.execute()
+            }
+        }
 
+    }
 }
