@@ -2,9 +2,14 @@ package br.com.matheusxreis.dogimages.domain.useCases
 
 import android.media.Image
 import br.com.matheusxreis.dogimages.domain.entities.ImageData
+import br.com.matheusxreis.dogimages.domain.errors.BadRequest
+import br.com.matheusxreis.dogimages.domain.errors.NotFound
 import br.com.matheusxreis.dogimages.domain.irepositories.IGetRandomImageRepository
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType
+import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.kotlin.doReturn
@@ -24,6 +29,8 @@ class GetRandomImageUseCaseTest {
     private val correctUrl = "https://fakeUrl.com.br"
     private val correctResponse = Response.success(200, ImageData(correctUrl))
     private val emptyStringResponse = Response.success(200, ImageData(""))
+    private val badRequestResponse = Response.error<ImageData>(400,"".toResponseBody())
+    private val notFoundRequestResponse = Response.error<ImageData>(404, "".toResponseBody())
 
 
     @Test
@@ -83,6 +90,41 @@ class GetRandomImageUseCaseTest {
         val sut = GetRandomImageUseCase(fakeRepository)
         //when and then
         assertThrows(Exception::class.java){
+            runTest {
+                sut.execute()
+            }
+        }
+    }
+
+    @Test
+    fun getRandomImageUseCase_repositoryError400_returnThrowsBadRequest(){
+
+        // given
+        val fakeRepository = object: IGetRandomImageRepository {
+            override suspend fun getRandomImageRepository(): Response<ImageData> {
+                return badRequestResponse
+            }
+        }
+        val sut = GetRandomImageUseCase(fakeRepository)
+        //when and then
+        assertThrows(BadRequest::class.java){
+            runTest {
+                sut.execute()
+            }
+        }
+    }
+
+    @Test
+    fun getRandomImageUseCase_repositoryError404_returnThrowsNotFound(){
+        // given
+        val fakeRepository = object: IGetRandomImageRepository {
+            override suspend fun getRandomImageRepository(): Response<ImageData> {
+                return notFoundRequestResponse
+            }
+        }
+        val sut = GetRandomImageUseCase(fakeRepository)
+        //when and then
+        assertThrows(NotFound::class.java){
             runTest {
                 sut.execute()
             }
