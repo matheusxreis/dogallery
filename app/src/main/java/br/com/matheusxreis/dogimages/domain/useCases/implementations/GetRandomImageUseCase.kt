@@ -8,6 +8,9 @@ class GetRandomImageUseCase constructor(private val repository: IGetRandomImageR
 
     override suspend fun execute():String{
         val result = repository.getRandomImageRepository()
+        if(result.url.isEmpty()){
+            throw Exception()
+        }
         return result.url
     }
 
