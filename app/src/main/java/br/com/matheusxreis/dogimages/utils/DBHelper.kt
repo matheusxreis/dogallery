@@ -9,7 +9,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?): SQLite
     override fun onCreate(p0: SQLiteDatabase?) {
         p0?.execSQL(
             "CREATE TABLE ${Constants.imagesTableName} (" +
-                    "${Constants.imagesColumnId} INTEGER PRIMARY KEY," +
+                    "${Constants.imagesColumnId} INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     "${Constants.imagesColumnUrl} TEXT," +
                     "${Constants.imagesColumnSavedAt} LONG)"
         )

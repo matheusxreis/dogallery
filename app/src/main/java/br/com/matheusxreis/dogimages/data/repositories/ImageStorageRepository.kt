@@ -27,7 +27,6 @@ class ImageStorageRepository constructor(context:Context):ISaveImageInStorageRep
             Constants.imagesTableName,
             null,
             ContentValues().apply {
-                put(Constants.imagesColumnId, (1..1000).random())
                 put(Constants.imagesColumnUrl, url)
                 put(Constants.imagesColumnSavedAt, 10920182818291892)
             }
