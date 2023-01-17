@@ -10,8 +10,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.matheusxreis.dogimages.data.repositories.ImageStorageRepository
 import br.com.matheusxreis.dogimages.data.repositories.ImagesRepository
+import br.com.matheusxreis.dogimages.domain.useCases.IGetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.IGetRandomImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.ISaveImageInStorageUseCase
+import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.SaveImageInStorageUseCase
 import br.com.matheusxreis.dogimages.utils.Network
@@ -21,6 +23,7 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
 
     lateinit private var getRandomImageUseCase: IGetRandomImageUseCase;
     lateinit private var saveImageInStorageUseCase: ISaveImageInStorageUseCase;
+    lateinit private var getImageInStorageUseCase: IGetImagesFromStorageUseCase;
 
 
     var actualImageUrl by mutableStateOf("")
@@ -35,10 +38,17 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
     var imageWasSaved by mutableStateOf(true)
         private set;
 
+    var amountImagesSaved by mutableStateOf(0)
+        private set;
+
     init {
         getRandomImageUseCase = GetRandomImageUseCase(ImagesRepository())
+        var storageRepo = ImageStorageRepository(application)
+        saveImageInStorageUseCase = SaveImageInStorageUseCase(storageRepo)
+        getImageInStorageUseCase = GetImagesFromStorageUseCase(storageRepo)
 
-        saveImageInStorageUseCase = SaveImageInStorageUseCase(ImageStorageRepository(application))
+        getAmountSaved()
+
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -67,10 +77,19 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
         actualImageUrl = image;
     }
 
+    fun getAmountSaved(){
+        viewModelScope.launch {
+            val list = getImageInStorageUseCase.execute()
+            amountImagesSaved = list.size
+
+        }
+    }
+
     fun saveImageInStorage(url:String){
         viewModelScope.launch {
             imageWasSaved = !imageWasSaved
             imageWasSaved = saveImageInStorageUseCase.execute(url)
+
         }
     }
 }

@@ -63,6 +63,9 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     var isLoadingData = mainViewModel.isLoading;
     var isConnected = mainViewModel.isConnected;
     var imageWasSaved = mainViewModel.imageWasSaved;
+    var amountSaved = mainViewModel.amountImagesSaved;
+
+
 
     var savingError by remember {
         mutableStateOf(false)   
@@ -70,6 +73,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     LaunchedEffect(imageWasSaved){
         savingError = !imageWasSaved
     }
+
 
     Column(modifier = Modifier.padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -95,7 +99,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             false -> {
                 if(actualImageUrl.length>0){
                     Row(){
-                        Text(text = "Amount of puppies saved: ${0}")
+                        Text(text = "Amount of puppies saved: ${amountSaved}")
                     }
                     Spacer(modifier = Modifier.height(7.dp))
                     AsyncImage(
