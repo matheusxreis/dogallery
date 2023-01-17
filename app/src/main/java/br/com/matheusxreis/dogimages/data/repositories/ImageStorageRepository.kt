@@ -1,11 +1,11 @@
 package br.com.matheusxreis.dogimages.data.repositories
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import br.com.matheusxreis.dogimages.domain.entities.Image
 import br.com.matheusxreis.dogimages.utils.Constants
 import br.com.matheusxreis.dogimages.utils.DBHelper
 
@@ -33,12 +33,20 @@ class ImageStorageRepository constructor(context:Context){
         )
     }
 
-    @SuppressLint("Range")
-    fun getImages(){
+    fun getImages(): List<Image> {
 
         val data = database.rawQuery("SELECT * FROM ${Constants.imagesTableName}", null)
-        Log.d("SAVEE2", data.toString())
-        data.getString(data.getColumnIndex(Constants.imagesColumnUrl))
+        var list = listOf<Image>();
+
+        while(data.moveToNext()){
+            list = list.plus(Image(
+                data.getString(0).toInt(),
+                data.getString(1),
+                data.getString(2).toLong()
+            )
+            )
+        }
+        return list;
     }
 
 }
