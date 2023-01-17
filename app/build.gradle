@@ -70,6 +70,8 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:3.2.0"
     // Optional -- Mockk framework
     testImplementation "io.mockk:mockk:1.13.3"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
 
     //vmcompose
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
