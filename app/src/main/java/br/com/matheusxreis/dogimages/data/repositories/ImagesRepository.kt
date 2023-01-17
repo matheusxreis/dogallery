@@ -1,4 +1,4 @@
-package br.com.matheusxreis.dogimages.data
+package br.com.matheusxreis.dogimages.data.repositories
 import br.com.matheusxreis.dogimages.domain.entities.ImageData
 import br.com.matheusxreis.dogimages.domain.irepositories.IGetRandomImageRepository
 import br.com.matheusxreis.dogimages.utils.Api

@@ -1,17 +1,14 @@
 package br.com.matheusxreis.dogimages.ui.viewmodels
 
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.matheusxreis.dogimages.data.ImagesRepository
+import br.com.matheusxreis.dogimages.data.repositories.ImagesRepository
 import br.com.matheusxreis.dogimages.domain.useCases.IGetRandomImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
 import br.com.matheusxreis.dogimages.utils.Network
