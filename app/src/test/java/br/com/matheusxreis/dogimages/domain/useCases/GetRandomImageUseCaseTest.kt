@@ -6,6 +6,11 @@ import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomIm
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class GetRandomImageUseCaseTest {
     //given -> my class
@@ -48,5 +53,17 @@ class GetRandomImageUseCaseTest {
             }
         }
 
+    }
+
+     @Test
+    fun getRandomImageUseCase_repository_calledOneTime() = runTest {
+       //given
+        val fakeRepository: IGetRandomImageRepository = mock()
+        whenever(fakeRepository.getRandomImageRepository()).doReturn(ImageData(correctUrl))
+        val sut = GetRandomImageUseCase(fakeRepository)
+        //when
+        sut.execute()
+        //then
+        verify(fakeRepository, times(1)).getRandomImageRepository()
     }
 }
