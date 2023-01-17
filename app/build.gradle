@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'br.com.matheusxreis.dogimages'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "br.com.matheusxreis.dogimages"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -67,9 +67,13 @@ dependencies {
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
-    
+
     //coil
     implementation("io.coil-kt:coil-compose:2.2.2")
+
+    //material
+    implementation "androidx.compose.material:material:1.4.0-alpha04"
+
 
 
 }
