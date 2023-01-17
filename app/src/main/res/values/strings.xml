@@ -5,4 +5,6 @@
     <string name="search">Search</string>
     <string name="search_again">Search Again</string>
     <string name="come_back_image">Come back image</string>
+    <string name="try_again">Try again</string>
+    <string name="not_net">Not network</string>
 </resources>

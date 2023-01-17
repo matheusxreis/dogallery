@@ -74,12 +74,12 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(7.dp))
-                .height(25.dp)
-                .background(color = MaterialTheme.colorScheme.errorContainer)){
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(7.dp))
+                    .height(25.dp)
+                    .background(color = MaterialTheme.colorScheme.errorContainer)){
                 Icon(Icons.Filled.Warning, contentDescription = "", tint=MaterialTheme.colorScheme.error)
-                Text(text = "No network")
+                Text(text = stringResource(id = R.string.not_net))
             }
             Spacer(modifier = Modifier.height(7.dp))
         }
@@ -120,7 +120,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     MyButton(onClick = { mainViewModel.getRandomImage() },
         enabled = !isLoadingData,
         icon = if(!isConnected) Icons.Rounded.Refresh else Icons.Rounded.Search,
-        text = if(!isConnected) "Try again" else if(actualImageUrl.length>0) stringResource(id = R.string.search_again).uppercase() else stringResource(
+        text = if(!isConnected) stringResource(id = R.string.try_again) else if(actualImageUrl.length>0) stringResource(id = R.string.search_again).uppercase() else stringResource(
             id = R.string.search
         ).uppercase()
     )
