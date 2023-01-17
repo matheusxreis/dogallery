@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">DogImages</string>
+    <string name="app_name">Dog Images</string>
+    <string name="sad_today">Are you sad today?</string>
+    <string name="try_dog_images">Try dog images to make your day happiest</string>
+    <string name="search">Search</string>
+    <string name="search_again">Search Again</string>
+    <string name="come_back_image">Come back image</string>
 </resources>
