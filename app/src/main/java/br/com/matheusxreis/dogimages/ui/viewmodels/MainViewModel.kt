@@ -89,6 +89,7 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
         viewModelScope.launch {
             imageWasSaved = !imageWasSaved
             imageWasSaved = saveImageInStorageUseCase.execute(url)
+            getAmountSaved()
 
         }
     }
