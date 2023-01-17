@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -123,6 +124,8 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             id = R.string.search
         ).uppercase()
     )
+    MyButton(onClick = { mainViewModel.saveImageInStorage(actualImageUrl) },
+        text = "Save", icon = Icons.Rounded.Star, enabled = true)
 
     if(lastImageUrl.length>0){
         MyButton(onClick = { mainViewModel.comeBackImage() },

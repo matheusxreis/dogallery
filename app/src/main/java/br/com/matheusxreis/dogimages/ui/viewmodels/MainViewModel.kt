@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.matheusxreis.dogimages.data.repositories.ImageStorageRepository
 import br.com.matheusxreis.dogimages.data.repositories.ImagesRepository
 import br.com.matheusxreis.dogimages.domain.useCases.IGetRandomImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application):AndroidViewModel(application) {
 
     lateinit private var getRandomImageUseCase: IGetRandomImageUseCase;
+    lateinit private var storageRepository: ImageStorageRepository;
 
 
     var actualImageUrl by mutableStateOf("")
@@ -30,6 +32,7 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
 
     init {
         getRandomImageUseCase = GetRandomImageUseCase(ImagesRepository())
+        storageRepository = ImageStorageRepository(context = application)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -56,5 +59,10 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
         var image = lastImageUrl;
         lastImageUrl = actualImageUrl;
         actualImageUrl = image;
+    }
+
+    fun saveImageInStorage(url:String){
+            storageRepository.saveImage(url)
+            storageRepository.getImages()
     }
 }
