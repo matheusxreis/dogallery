@@ -1,15 +1,21 @@
 package br.com.matheusxreis.dogimages
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +38,7 @@ import br.com.matheusxreis.dogimages.ui.viewmodels.MainViewModel
 import coil.compose.AsyncImage
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -48,20 +55,39 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     var actualImageUrl = mainViewModel.actualImageUrl;
     var lastImageUrl = mainViewModel.lastImageUrl;
     var isLoadingData = mainViewModel.isLoading;
+    var isConnected = mainViewModel.isConnected;
+
+
 
     Column(modifier = Modifier.padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
-       when(isLoadingData){
+
+        if(!isConnected){
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(7.dp))
+                .height(25.dp)
+                .background(color = MaterialTheme.colorScheme.errorContainer)){
+                Icon(Icons.Filled.Warning, contentDescription = "", tint=MaterialTheme.colorScheme.error)
+                Text(text = "No network")
+            }
+            Spacer(modifier = Modifier.height(7.dp))
+        }
+        when(isLoadingData){
             true -> CircularProgressIndicator();
             false -> {
                 if(actualImageUrl.length>0){
-                    
+
                     Spacer(modifier = Modifier.height(7.dp))
                     AsyncImage(
                         model=actualImageUrl,
@@ -76,11 +102,16 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                             )
                     )
                 }else {
-                    Text(text = stringResource(id = R.string.sad_today),
-                    fontWeight = FontWeight.Bold
-                    )
-                    Text(text = stringResource(id = R.string.try_dog_images),
-                    fontWeight = FontWeight.Light)
+                    if(isConnected) {
+                        Text(
+                            text = stringResource(id = R.string.sad_today),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = stringResource(id = R.string.try_dog_images),
+                            fontWeight = FontWeight.Light
+                        )
+                    }
                 }
                
            }
@@ -88,8 +119,8 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     Spacer(modifier = Modifier.height(7.dp))
     MyButton(onClick = { mainViewModel.getRandomImage() },
         enabled = !isLoadingData,
-        icon = Icons.Rounded.Search,
-        text = if(actualImageUrl.length>0) stringResource(id = R.string.search_again).uppercase() else stringResource(
+        icon = if(!isConnected) Icons.Rounded.Refresh else Icons.Rounded.Search,
+        text = if(!isConnected) "Try again" else if(actualImageUrl.length>0) stringResource(id = R.string.search_again).uppercase() else stringResource(
             id = R.string.search
         ).uppercase()
     )
