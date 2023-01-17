@@ -84,7 +84,9 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(7.dp))
         }
         when(isLoadingData){
-            true -> CircularProgressIndicator();
+            true -> CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.primary
+            );
             false -> {
                 if(actualImageUrl.length>0){
 
