@@ -31,11 +31,17 @@ class MainViewModel:ViewModel() {
         isLoading = true;
         viewModelScope.launch {
             var url = getRandomImageUseCase.execute()
-            if(lastImageUrl.length>0) {
+            if(actualImageUrl.length>0) {
                 lastImageUrl = actualImageUrl;
             }
              actualImageUrl = url;
             isLoading = false;
         }
+    }
+
+    fun comeBackImage(){
+        var image = lastImageUrl;
+        lastImageUrl = actualImageUrl;
+        actualImageUrl = image;
     }
 }
