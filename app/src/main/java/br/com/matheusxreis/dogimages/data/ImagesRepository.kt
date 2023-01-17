@@ -1,7 +1,4 @@
 package br.com.matheusxreis.dogimages.data
-
-import android.util.Log
-import androidx.compose.ui.unit.Constraints
 import br.com.matheusxreis.dogimages.domain.entities.ImageData
 import br.com.matheusxreis.dogimages.domain.irepositories.IGetRandomImageRepository
 import br.com.matheusxreis.dogimages.utils.Api
@@ -17,7 +14,6 @@ class ImagesRepository: IGetRandomImageRepository {
     }
     override suspend fun getRandomImageRepository(): Response<ImageData> {
         val result = api.getRandomImageRepository()
-
 
         return result;
     }
