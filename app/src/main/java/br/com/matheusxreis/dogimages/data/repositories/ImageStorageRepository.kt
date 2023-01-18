@@ -54,9 +54,11 @@ class ImageStorageRepository constructor(context:Context):
         return list;
     }
 
-    override suspend fun remove(id: String) {
-       database.rawQuery(
-           "DELETE FROM ${Constants.imagesTableName} WHERE ${Constants.imagesColumnId}=$id",
+    override suspend fun remove(id: Int) {
+        Log.d("REMOVE", id.toString())
+       database.delete(
+           Constants.imagesTableName,
+           "${Constants.imagesColumnId} = $id",
            null
        )
     }

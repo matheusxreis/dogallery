@@ -4,7 +4,7 @@ import br.com.matheusxreis.dogimages.domain.irepositories.IRemoveImageFromStorag
 import br.com.matheusxreis.dogimages.domain.useCases.IRemoveImageFromStorageUseCase
 
 class RemoveImageFromStorageUseCase constructor(private val repository:IRemoveImageFromStorageRepository):IRemoveImageFromStorageUseCase{
-    override suspend fun execute(id: String): Boolean {
+    override suspend fun execute(id: Int): Boolean {
         return try{
             repository.remove(id)
             true
