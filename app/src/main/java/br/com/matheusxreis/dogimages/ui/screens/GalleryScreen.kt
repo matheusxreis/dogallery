@@ -1,6 +1,8 @@
 package br.com.matheusxreis.dogimages.ui.screens
 
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,12 +27,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import br.com.matheusxreis.dogimages.domain.entities.Image
 import br.com.matheusxreis.dogimages.ui.components.MyButton
 import br.com.matheusxreis.dogimages.R
 import br.com.matheusxreis.dogimages.ui.providers.NotificationLocalOf
+import br.com.matheusxreis.dogimages.utils.Downloader
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
@@ -43,7 +48,11 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
     var dialogState by remember {
         mutableStateOf(false)
     }
-    var notifications = NotificationLocalOf.current
+    var downloadingImage by remember {
+        mutableStateOf(false)
+    }
+    val notifications = NotificationLocalOf.current
+    val context = LocalContext.current
 
 
     fun openDialog(it:Image){
@@ -51,6 +60,29 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
         dialogState = true
     }
 
+    fun downloadImage(url:String){
+         class DownloadTask:Thread(){
+             override fun run() {
+                 downloadingImage = true;
+                     val dowloader = Downloader()
+                     val bitmap = dowloader.transformBitmap(url);
+                     dowloader.downloadImage("${url.slice(15..19)}-dog-${(0..1000).random()}.png", bitmap)
+                     downloadingImage = false;
+
+             }
+         }
+        try{
+            DownloadTask().start()
+            Toast.makeText(context, "Downloaded was a success!", Toast.LENGTH_LONG).show()
+        }catch(err:Exception){
+            Toast.makeText(context, "Something was wrong with download!", Toast.LENGTH_LONG).show()
+            downloadingImage = false;
+
+        }
+
+
+
+    }
 
     LaunchedEffect(Unit) {
         galleryViewModel.getImages()
@@ -120,9 +152,10 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                                     )
                                     MyButton(
                                         onClick = {
-
+                                            downloadImage(actualImage!!.url)
                                         },
                                         text = "Download",
+                                        loading = downloadingImage,
                                         icon = Icons.Outlined.ArrowDropDown,
                                         enabled = true
                                     )
