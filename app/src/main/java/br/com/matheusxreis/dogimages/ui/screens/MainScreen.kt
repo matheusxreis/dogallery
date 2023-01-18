@@ -9,10 +9,8 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -46,16 +44,26 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     var savingError by remember {
         mutableStateOf(false)
     }
+    var alreadySaved by remember {
+        mutableStateOf(false)
+    }
 
     fun saveImage(){
-        mainViewModel.saveImageInStorage(actualImageUrl) { notifications.increment() };
+        mainViewModel.saveImageInStorage(actualImageUrl) { notifications.increment(); };
+        alreadySaved = mainViewModel.alreadyIsSaved(actualImageUrl)
     }
+
+
     LaunchedEffect(imageWasSaved){
         savingError = !imageWasSaved
     }
+    LaunchedEffect(actualImageUrl){
+        alreadySaved = mainViewModel.alreadyIsSaved(actualImageUrl)
+    }
 
-
-    Column(modifier = Modifier.padding(24.dp).fillMaxSize(),
+    Column(modifier = Modifier
+        .padding(24.dp)
+        .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
 
@@ -111,7 +119,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
         }
 
         Spacer(modifier = Modifier.height(7.dp))
-        MyButton(onClick = { mainViewModel.getRandomImage() },
+        MyButton(onClick = { alreadySaved = false; mainViewModel.getRandomImage() },
             enabled = !isLoadingData,
             icon = if(!isConnected) Icons.Rounded.Refresh else Icons.Rounded.Search,
             text = if(!isConnected) stringResource(id = R.string.try_again) else if(actualImageUrl.length>0) stringResource(id = R.string.search_again).uppercase() else stringResource(
@@ -122,8 +130,9 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
         if(actualImageUrl.length>0){
             MyButton(onClick = { saveImage() },
                 text = if(savingError) stringResource(id = R.string.try_again) else stringResource(id = R.string.save),
-                icon = if(savingError) Icons.Rounded.Refresh else Icons.Rounded.Star,
-                enabled = actualImageUrl.length>0)
+                icon = if(savingError) Icons.Rounded.Refresh else Icons.Outlined.Favorite,
+                enabled = !alreadySaved
+            )
         }
         if(lastImageUrl.length>0){
             MyButton(onClick = { mainViewModel.comeBackImage() },
