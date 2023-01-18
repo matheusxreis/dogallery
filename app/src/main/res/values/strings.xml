@@ -10,4 +10,6 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="amount_of_puppies">Amount of puppies saved</string>
+    <string name="you_didnt_favorite">"You didn't favorite any puppy yet"</string>
+    <string name="refresh">Refresh</string>
 </resources>

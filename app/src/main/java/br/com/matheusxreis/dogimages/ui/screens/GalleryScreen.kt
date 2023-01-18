@@ -123,7 +123,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                     Column(modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center){
-                        Text(text = "You dont favorite no one puppy yet")
+                        Text(text = stringResource(id = R.string.you_didnt_favorite))
 
                     }
                 }
@@ -132,10 +132,10 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
             else -> Column( modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center) {
                 Text(text = stringResource(id = R.string.not_net))
-                MyButton(onClick = {galleryViewModel.getImages()}, text = "Refresh", icon = Icons.Rounded.Refresh, enabled = true)
+                MyButton(onClick = {galleryViewModel.getImages()}, text = stringResource(id = R.string.refresh), icon = Icons.Rounded.Refresh, enabled = true)
             }
         }
      
