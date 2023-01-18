@@ -10,9 +10,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.matheusxreis.dogimages.data.repositories.ImageStorageRepository
 import br.com.matheusxreis.dogimages.data.repositories.ImagesRepository
+import br.com.matheusxreis.dogimages.domain.useCases.IAlreadyExistUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.IGetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.IGetRandomImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.ISaveImageInStorageUseCase
+import br.com.matheusxreis.dogimages.domain.useCases.implementations.AlreadyExistUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.SaveImageInStorageUseCase
@@ -24,6 +26,7 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
     lateinit private var getRandomImageUseCase: IGetRandomImageUseCase;
     lateinit private var saveImageInStorageUseCase: ISaveImageInStorageUseCase;
     lateinit private var getImageInStorageUseCase: IGetImagesFromStorageUseCase;
+    lateinit private var alreadyExistUseCase: IAlreadyExistUseCase;
 
 
     var actualImageUrl by mutableStateOf("")
@@ -46,6 +49,7 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
         var storageRepo = ImageStorageRepository(application)
         saveImageInStorageUseCase = SaveImageInStorageUseCase(storageRepo)
         getImageInStorageUseCase = GetImagesFromStorageUseCase(storageRepo)
+        alreadyExistUseCase = AlreadyExistUseCase(storageRepo)
 
         getAmountSaved()
 
@@ -100,5 +104,13 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
                 imageWasSaved = false;
             }
         }
+    }
+
+    fun alreadyIsSaved(url:String):Boolean {
+        var already:Boolean? = null;
+        viewModelScope.launch {
+            already = alreadyExistUseCase.execute(url)
+        }
+        return already as Boolean;
     }
 }
