@@ -85,12 +85,20 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
         }
     }
 
-    fun saveImageInStorage(url:String){
-        viewModelScope.launch {
-            imageWasSaved = !imageWasSaved
-            imageWasSaved = saveImageInStorageUseCase.execute(url)
-            getAmountSaved()
+    fun saveImageInStorage(url:String, callback: ()->Unit){
+         viewModelScope.launch {
+            try {
+                imageWasSaved = true
+                var result = saveImageInStorageUseCase.execute(url);
+                if(result){
+                    callback()
+                }
 
+                getAmountSaved()
+
+            }catch(err:Exception){
+                imageWasSaved = false;
+            }
         }
     }
 }

@@ -29,7 +29,7 @@ import androidx.compose.ui.window.Dialog
 import br.com.matheusxreis.dogimages.domain.entities.Image
 import br.com.matheusxreis.dogimages.ui.components.MyButton
 import br.com.matheusxreis.dogimages.R
-import br.com.matheusxreis.dogimages.utils.Network
+import br.com.matheusxreis.dogimages.ui.providers.NotificationLocalOf
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
@@ -42,14 +42,18 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
     var dialogState by remember {
         mutableStateOf(false)
     }
+    var notifications = NotificationLocalOf.current
+
 
     fun openDialog(it:Image){
         actualImage = Image(it.id, it.url, it.savedAt)
         dialogState = true
     }
 
+
     LaunchedEffect(Unit) {
         galleryViewModel.getImages()
+        notifications.reset()
     }
 
 

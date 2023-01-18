@@ -29,6 +29,7 @@ import br.com.matheusxreis.dogimages.ui.components.MyButton
 import br.com.matheusxreis.dogimages.ui.viewmodels.MainViewModel
 import coil.compose.AsyncImage
 import br.com.matheusxreis.dogimages.R
+import br.com.matheusxreis.dogimages.ui.providers.NotificationLocalOf
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
@@ -40,8 +41,14 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     var imageWasSaved = mainViewModel.imageWasSaved;
     var amountSaved = mainViewModel.amountImagesSaved;
 
+    var notifications = NotificationLocalOf.current
+
     var savingError by remember {
         mutableStateOf(false)
+    }
+
+    fun saveImage(){
+        mainViewModel.saveImageInStorage(actualImageUrl) { notifications.increment() };
     }
     LaunchedEffect(imageWasSaved){
         savingError = !imageWasSaved
@@ -113,7 +120,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
         )
 
         if(actualImageUrl.length>0){
-            MyButton(onClick = { mainViewModel.saveImageInStorage(actualImageUrl) },
+            MyButton(onClick = { saveImage() },
                 text = if(savingError) stringResource(id = R.string.try_again) else stringResource(id = R.string.save),
                 icon = if(savingError) Icons.Rounded.Refresh else Icons.Rounded.Star,
                 enabled = actualImageUrl.length>0)
