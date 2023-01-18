@@ -48,7 +48,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     }
 
 
-    Column(modifier = Modifier.padding(24.dp),
+    Column(modifier = Modifier.padding(24.dp).fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
 
