@@ -5,6 +5,10 @@ import br.com.matheusxreis.dogimages.domain.useCases.ISaveImageInStorageUseCase
 
 class SaveImageInStorageUseCase constructor(private val repository: ISaveImageInStorageRepository):ISaveImageInStorageUseCase {
     override suspend fun execute(url: String): Boolean {
+        val imageAlreadyStored = repository.findByUrl(url)
+        if(imageAlreadyStored != null){
+            return true
+        }
        try{
            repository.saveImage(url)
            return true;

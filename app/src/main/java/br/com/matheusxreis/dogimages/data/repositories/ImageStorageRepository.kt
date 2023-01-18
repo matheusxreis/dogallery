@@ -63,4 +63,19 @@ class ImageStorageRepository constructor(context:Context):
        )
     }
 
+    override suspend fun findByUrl(url:String):Image?{
+        val data = database.rawQuery("SELECT * FROM ${Constants.imagesTableName} WHERE ${Constants.imagesColumnUrl}="+"'$url'", null)
+        var exist:Image? = null;
+        while(data.moveToNext()){
+           if(data.getString(1).isNotEmpty()){
+               exist = Image(
+                   id = data.getString(0).toInt(),
+                   url = data.getString(1),
+                   savedAt = data.getString(2).toLong()
+               )
+           }
+        }
+        return exist
+    }
+
 }
