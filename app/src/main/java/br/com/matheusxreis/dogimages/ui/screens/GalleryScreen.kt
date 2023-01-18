@@ -56,66 +56,82 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
         when (galleryViewModel.isConnected){
             true ->   Column(modifier = Modifier.fillMaxWidth()) {
 
-
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 128.dp),
-                    verticalArrangement = Arrangement.spacedBy(1.dp),
-                    horizontalArrangement = Arrangement.spacedBy(1.dp),
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.background)
-                        .fillMaxSize()
-                ) {
-                    items(images) {
-                        AsyncImage(
-                            model = it.url,
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .width((50..300).random().dp)
-                                .height(300.dp)
-                                .clip(
-                                    shape = RoundedCornerShape(2.dp)
-                                )
-                                .clickable {
-                                    openDialog(it)
-                                }
-                        )
-                    }
-                }
-
-                if(dialogState){
-                    Dialog(onDismissRequest = { dialogState = false }) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .padding(horizontal = 2.dp)
-                                .background(color = Color.Transparent)
-                                .clickable { dialogState = false }
-                        ){
-                            AsyncImage(model = actualImage!!.url,
-                                contentDescription = "",
-                                modifier = Modifier.fillMaxWidth(1f)
+                if(images.isNotEmpty()) {
+                    LazyVerticalGrid(
+                        columns = GridCells.Adaptive(minSize = 128.dp),
+                        verticalArrangement = Arrangement.spacedBy(1.dp),
+                        horizontalArrangement = Arrangement.spacedBy(1.dp),
+                        modifier = Modifier
+                            .background(color = MaterialTheme.colorScheme.background)
+                            .fillMaxSize()
+                    ) {
+                        items(images) {
+                            AsyncImage(
+                                model = it.url,
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .width((50..300).random().dp)
+                                    .height(300.dp)
+                                    .clip(
+                                        shape = RoundedCornerShape(2.dp)
+                                    )
+                                    .clickable {
+                                        openDialog(it)
+                                    }
                             )
-                            Row(
-                                modifier = Modifier.fillMaxWidth(1f)
-                            ){
+                        }
+                    }
 
-                                MyButton(onClick = { galleryViewModel.removeImage(actualImage!!.id); dialogState = false },
-                                    text = stringResource(id = R.string.delete) ,
-                                    icon = Icons.Rounded.Delete,
-                                    color = MaterialTheme.colorScheme.error,
-                                    enabled = true)
+                    if (dialogState) {
+                        Dialog(onDismissRequest = { dialogState = false }) {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .padding(horizontal = 2.dp)
+                                    .background(color = Color.Transparent)
+                                    .clickable { dialogState = false }
+                            ) {
+                                AsyncImage(
+                                    model = actualImage!!.url,
+                                    contentDescription = "",
+                                    modifier = Modifier.fillMaxWidth(1f)
+                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(1f)
+                                ) {
+
+                                    MyButton(
+                                        onClick = {
+                                            galleryViewModel.removeImage(actualImage!!.id); dialogState =
+                                            false
+                                        },
+                                        text = stringResource(id = R.string.delete),
+                                        icon = Icons.Rounded.Delete,
+                                        color = MaterialTheme.colorScheme.error,
+                                        enabled = true
+                                    )
+                                }
+
                             }
 
-                        }
 
+                        }
+                    }
+                }else {
+                    Column(modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center){
+                        Text(text = "You dont favorite no one puppy yet")
 
                     }
                 }
 
             }
-            else -> Column( modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
+            else -> Column( modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
                 Text(text = stringResource(id = R.string.not_net))
