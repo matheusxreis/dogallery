@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
+import br.com.matheusxreis.dogimages.domain.entities.Image
 import br.com.matheusxreis.dogimages.ui.components.MyButton
 
 
@@ -29,14 +30,14 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
 
     val images = galleryViewModel.images;
     var actualImage by remember {
-        mutableStateOf("")
+        mutableStateOf<Image?>(null)
     }
     var dialogState by remember {
         mutableStateOf(false)
     }
 
-    fun openDialog(url:String){
-        actualImage = url
+    fun openDialog(it:Image){
+        actualImage = Image(it.id, it.url, it.savedAt)
         dialogState = true
     }
 
@@ -67,7 +68,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                             shape = RoundedCornerShape(2.dp)
                         )
                         .clickable {
-                            openDialog(it.url)
+                            openDialog(it)
                         }
                 )
             }
@@ -83,7 +84,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                             .background(color = Color.Transparent)
                             .clickable { dialogState = false }
                     ){
-                        AsyncImage(model = actualImage,
+                        AsyncImage(model = actualImage!!.url,
                             contentDescription = "",
                             modifier = Modifier.fillMaxWidth(1f)
                            )
@@ -91,7 +92,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                             modifier = Modifier.fillMaxWidth(1f)
                         ){
 
-                            MyButton(onClick = {},
+                            MyButton(onClick = { galleryViewModel.removeImage(actualImage!!.id); dialogState = false },
                                 text = "Delete" ,
                                 icon = Icons.Rounded.Delete,
                                 color = MaterialTheme.colorScheme.error,
