@@ -7,13 +7,13 @@ class SaveImageInStorageUseCase constructor(private val repository: ISaveImageIn
     override suspend fun execute(url: String): Boolean {
         val imageAlreadyStored = repository.findByUrl(url)
         if(imageAlreadyStored != null){
-            return true
+            return false
         }
        try{
            repository.saveImage(url)
            return true;
        }catch (err:Exception){
-           return false;
+          throw Exception()
        }
     }
 }
