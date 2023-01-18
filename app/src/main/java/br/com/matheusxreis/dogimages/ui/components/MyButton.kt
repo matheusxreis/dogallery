@@ -17,12 +17,13 @@ fun MyButton(
     text: String,
     icon: ImageVector,
     enabled: Boolean,
-    secondary: Boolean = false
+    secondary: Boolean = false,
+    color: Color? = null
 ){
     Button(onClick = onClick,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor= if(secondary) Color.LightGray else MaterialTheme.colorScheme.primary,
+            containerColor= color ?: if(secondary) Color.LightGray else MaterialTheme.colorScheme.primary,
         ),
         modifier = Modifier.fillMaxWidth()) {
         Icon(icon, contentDescription = "", tint = MaterialTheme.colorScheme.background)
