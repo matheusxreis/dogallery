@@ -114,7 +114,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
 
         if(actualImageUrl.length>0){
             MyButton(onClick = { mainViewModel.saveImageInStorage(actualImageUrl) },
-                text = if(savingError) "Try again" else "Save",
+                text = if(savingError) stringResource(id = R.string.try_again) else stringResource(id = R.string.save),
                 icon = if(savingError) Icons.Rounded.Refresh else Icons.Rounded.Star,
                 enabled = actualImageUrl.length>0)
         }
@@ -130,7 +130,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(7.dp))
         if(!isLoadingData){
             Row(){
-                Text(text = "Amount of puppies saved: ${amountSaved}")
+                Text(text = "${stringResource(id = R.string.amount_of_puppies)}: ${amountSaved}")
             }
         }
 

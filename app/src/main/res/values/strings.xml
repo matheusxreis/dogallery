@@ -7,4 +7,7 @@
     <string name="come_back_image">Come back image</string>
     <string name="try_again">Try again</string>
     <string name="not_net">Not network</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="amount_of_puppies">Amount of puppies saved</string>
 </resources>

@@ -20,10 +20,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import br.com.matheusxreis.dogimages.domain.entities.Image
 import br.com.matheusxreis.dogimages.ui.components.MyButton
-
+import br.com.matheusxreis.dogimages.R
 
 @Composable
 fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
@@ -93,11 +94,10 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                         ){
 
                             MyButton(onClick = { galleryViewModel.removeImage(actualImage!!.id); dialogState = false },
-                                text = "Delete" ,
+                                text = stringResource(id = R.string.delete) ,
                                 icon = Icons.Rounded.Delete,
                                 color = MaterialTheme.colorScheme.error,
                                 enabled = true)
-
                         }
 
                     }
