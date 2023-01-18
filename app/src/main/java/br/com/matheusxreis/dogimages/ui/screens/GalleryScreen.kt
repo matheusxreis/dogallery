@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import br.com.matheusxreis.dogimages.ui.viewmodels.GalleryViewModel
 import coil.compose.AsyncImage
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.MaterialTheme
@@ -102,9 +103,10 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                                     contentDescription = "",
                                     modifier = Modifier.fillMaxWidth(1f)
                                 )
-                                Row(
+                                Column(
                                     modifier = Modifier.fillMaxWidth(1f)
                                 ) {
+
 
                                     MyButton(
                                         onClick = {
@@ -116,6 +118,15 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                                         color = MaterialTheme.colorScheme.error,
                                         enabled = true
                                     )
+                                    MyButton(
+                                        onClick = {
+
+                                        },
+                                        text = "Download",
+                                        icon = Icons.Outlined.ArrowDropDown,
+                                        enabled = true
+                                    )
+
                                 }
 
                             }
