@@ -138,7 +138,7 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             MyButton(onClick = { mainViewModel.comeBackImage() },
                 text = stringResource(id = R.string.come_back_image),
                 enabled = !isLoadingData,
-                secondary = true,
+                color = MaterialTheme.colorScheme.secondary,
                 icon = Icons.Rounded.ArrowBack
             )
         }
