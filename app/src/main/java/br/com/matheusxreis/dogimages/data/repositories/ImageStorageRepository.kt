@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import br.com.matheusxreis.dogimages.domain.entities.Image
+import br.com.matheusxreis.dogimages.domain.irepositories.IFindByUrlRepository
 import br.com.matheusxreis.dogimages.domain.irepositories.IGetImagesFromStorageRepository
 import br.com.matheusxreis.dogimages.domain.irepositories.IRemoveImageFromStorageRepository
 import br.com.matheusxreis.dogimages.domain.irepositories.ISaveImageInStorageRepository
@@ -15,7 +16,9 @@ import br.com.matheusxreis.dogimages.utils.DBHelper
 class ImageStorageRepository constructor(context:Context):
     ISaveImageInStorageRepository,
     IGetImagesFromStorageRepository,
-    IRemoveImageFromStorageRepository{
+    IRemoveImageFromStorageRepository,
+    IFindByUrlRepository
+{
 
     lateinit var  helper: SQLiteOpenHelper;
     lateinit var database: SQLiteDatabase;
