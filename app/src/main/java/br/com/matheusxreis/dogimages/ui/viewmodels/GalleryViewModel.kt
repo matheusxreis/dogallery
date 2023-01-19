@@ -4,7 +4,6 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
@@ -17,6 +16,7 @@ import br.com.matheusxreis.dogimages.domain.useCases.IRemoveImageFromStorageUseC
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.DownloadImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.RemoveImageFromStorageUseCase
+import br.com.matheusxreis.dogimages.helpers.NotificationHelper
 import br.com.matheusxreis.dogimages.utils.Network
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
         var storageRepo = ImageStorageRepository(application);
         getImageInStorageUseCase = GetImagesFromStorageUseCase(storageRepo);
         removeImageInStorageUseCase = RemoveImageFromStorageUseCase(storageRepo);
-        downloadImageUseCase = DownloadImageUseCase()
+        downloadImageUseCase = DownloadImageUseCase();
 
     }
 
@@ -72,6 +72,7 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
 
     fun downloadImage(url:String){
         downloading = true
+
         viewModelScope.launch(Dispatchers.Default) {
             val result = downloadImageUseCase.execute(
                 url,
@@ -80,6 +81,10 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
             if(!result){
                 downloading = null
             }else {
+                val notification = NotificationHelper(getApplication<Application>().applicationContext);
+                val channelId = "DOWNLOAD_CHANNEL_ID"
+                notification.createNotificationChannel(channelId);
+                notification.dispareNotification(channelId, "Download", "Imagem de cachorrinho baixada");
                 downloading = false
             }
 
