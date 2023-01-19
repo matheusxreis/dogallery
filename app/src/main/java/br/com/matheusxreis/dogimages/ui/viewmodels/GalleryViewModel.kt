@@ -71,6 +71,8 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
     }
 
 
+
+
     fun downloadImage(url:String){
         downloading = true
         val nameFile = RandomNameImage.generate(url)
@@ -78,7 +80,8 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
         viewModelScope.launch(Dispatchers.Default) {
             val result = downloadImageUseCase.execute(
                 url,
-                nameFile
+                nameFile,
+                getApplication<Application>().applicationContext
             )
             if(!result){
                 downloading = null
