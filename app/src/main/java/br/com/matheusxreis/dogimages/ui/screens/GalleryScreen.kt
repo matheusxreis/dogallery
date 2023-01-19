@@ -174,7 +174,8 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                     }
 
                 }else {
-                    Column(modifier = Modifier.fillMaxSize(),
+                    Column(modifier = Modifier.fillMaxSize()
+                        .background(color=MaterialTheme.colorScheme.background),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center){
                         Text(text = stringResource(id = R.string.you_didnt_favorite))
@@ -185,6 +186,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
             }
             else -> Column( modifier = Modifier
                 .fillMaxSize()
+                .background(color=MaterialTheme.colorScheme.background)
                 .padding(horizontal = 24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center) {
