@@ -73,7 +73,12 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
 
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun downloadImage(url:String){
+
+        if(!NetworkHelper.isConnected(getApplication())){
+            return;
+        }
         downloading = true
         val nameFile = RandomNameImage.generate(url)
 
