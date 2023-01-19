@@ -11,7 +11,7 @@ import br.com.matheusxreis.dogimages.domain.irepositories.IGetImagesFromStorageR
 import br.com.matheusxreis.dogimages.domain.irepositories.IRemoveImageFromStorageRepository
 import br.com.matheusxreis.dogimages.domain.irepositories.ISaveImageInStorageRepository
 import br.com.matheusxreis.dogimages.utils.Constants
-import br.com.matheusxreis.dogimages.utils.DBHelper
+import br.com.matheusxreis.dogimages.data.db.DBHelper
 
 class ImageStorageRepository constructor(context:Context):
     ISaveImageInStorageRepository,

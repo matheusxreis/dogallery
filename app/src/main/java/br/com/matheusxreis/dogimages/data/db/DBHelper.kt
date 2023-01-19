@@ -1,8 +1,9 @@
-package br.com.matheusxreis.dogimages.utils
+package br.com.matheusxreis.dogimages.data.db
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import br.com.matheusxreis.dogimages.utils.Constants
 
 class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?): SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION){
 
