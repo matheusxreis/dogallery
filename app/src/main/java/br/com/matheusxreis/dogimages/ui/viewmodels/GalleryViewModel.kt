@@ -11,23 +11,28 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.matheusxreis.dogimages.data.repositories.ImageStorageRepository
 import br.com.matheusxreis.dogimages.domain.entities.Image
+import br.com.matheusxreis.dogimages.domain.useCases.IDownloadImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.IGetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.IRemoveImageFromStorageUseCase
+import br.com.matheusxreis.dogimages.domain.useCases.implementations.DownloadImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.RemoveImageFromStorageUseCase
 import br.com.matheusxreis.dogimages.utils.Network
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class GalleryViewModel(application: Application): AndroidViewModel(application) {
 
     lateinit private var getImageInStorageUseCase: IGetImagesFromStorageUseCase;
     lateinit private var removeImageInStorageUseCase: IRemoveImageFromStorageUseCase;
+    lateinit private var downloadImageUseCase: IDownloadImageUseCase
 
 
     init {
         var storageRepo = ImageStorageRepository(application);
         getImageInStorageUseCase = GetImagesFromStorageUseCase(storageRepo);
         removeImageInStorageUseCase = RemoveImageFromStorageUseCase(storageRepo);
+        downloadImageUseCase = DownloadImageUseCase()
 
     }
 
@@ -36,6 +41,9 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
         private set;
     var isConnected by mutableStateOf(true)
         private set;
+    var downloading by mutableStateOf<Boolean?>(false)
+        private set;
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun getImages(){
@@ -61,5 +69,23 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
         }
     }
 
+
+    fun downloadImage(url:String){
+        downloading = true
+        viewModelScope.launch(Dispatchers.Default) {
+            val result = downloadImageUseCase.execute(
+                url,
+                "${(2..20000).random()}"
+            )
+            if(!result){
+                downloading = null
+            }else {
+                downloading = false
+            }
+
+        }
+
+
+    }
 
 }
