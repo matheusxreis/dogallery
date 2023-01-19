@@ -3,6 +3,7 @@ package br.com.matheusxreis.dogimages.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import br.com.matheusxreis.dogimages.helpers.NetworkHelper
 import org.junit.Assert.*
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -23,7 +24,7 @@ class NetworkTest {
         val mockContext = mock<Context> {
             on { getSystemService(Context.CONNECTIVITY_SERVICE) } doReturn mockConnectivityManager
         }
-        val sut = Network
+        val sut = NetworkHelper
        // when
         val result = sut.isConnected(mockContext)
         // then
@@ -43,7 +44,7 @@ class NetworkTest {
         val mockContext = mock<Context> {
             on { getSystemService(Context.CONNECTIVITY_SERVICE) } doReturn mockConnectivityManager
         }
-        val sut = Network
+        val sut = NetworkHelper
         // when
         val result = sut.isConnected(mockContext)
         // then

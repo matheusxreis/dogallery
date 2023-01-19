@@ -17,7 +17,7 @@ import br.com.matheusxreis.dogimages.domain.useCases.implementations.DownloadIma
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.RemoveImageFromStorageUseCase
 import br.com.matheusxreis.dogimages.helpers.NotificationHelper
-import br.com.matheusxreis.dogimages.utils.Network
+import br.com.matheusxreis.dogimages.helpers.NetworkHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -48,7 +48,7 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
     @RequiresApi(Build.VERSION_CODES.M)
     fun getImages(){
 
-        val conn = Network.isConnected(context = getApplication<Application>().applicationContext)
+        val conn = NetworkHelper.isConnected(context = getApplication<Application>().applicationContext)
 
         if(conn) {
             isConnected = true

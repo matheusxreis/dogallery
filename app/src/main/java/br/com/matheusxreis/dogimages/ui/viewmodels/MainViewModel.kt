@@ -18,7 +18,7 @@ import br.com.matheusxreis.dogimages.domain.useCases.implementations.AlreadyExis
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetImagesFromStorageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetRandomImageUseCase
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.SaveImageInStorageUseCase
-import br.com.matheusxreis.dogimages.utils.Network
+import br.com.matheusxreis.dogimages.helpers.NetworkHelper
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application):AndroidViewModel(application) {
@@ -58,7 +58,7 @@ class MainViewModel(application: Application):AndroidViewModel(application) {
     @RequiresApi(Build.VERSION_CODES.M)
     fun getRandomImage(){
         isLoading = true;
-        val conn = Network.isConnected(context = getApplication<Application>().applicationContext)
+        val conn = NetworkHelper.isConnected(context = getApplication<Application>().applicationContext)
         if(!conn){
             isConnected = false;
             isLoading = false;

@@ -1,4 +1,4 @@
-package br.com.matheusxreis.dogimages.utils
+package br.com.matheusxreis.dogimages.helpers
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-class Network {
+class NetworkHelper {
 
     companion object {
         @RequiresApi(Build.VERSION_CODES.M)
