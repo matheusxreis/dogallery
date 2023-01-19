@@ -69,10 +69,14 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
     }
 
     Column(modifier = Modifier
-        .padding(24.dp)
-        .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+        .background(color = MaterialTheme.colorScheme.background)
+        .fillMaxSize()) {
+        Column(modifier = Modifier.padding(horizontal = 24.dp)
+            .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
 
 
         if(!isConnected){
@@ -107,7 +111,8 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                             .shadow(2.dp)
                             .clip(
                                 RoundedCornerShape(7.dp)
-                            ).clickable {
+                            )
+                            .clickable {
                                 dialogState = true
                             }
                     )
@@ -192,5 +197,6 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
 
             }
         }
+       }
     }
 }
