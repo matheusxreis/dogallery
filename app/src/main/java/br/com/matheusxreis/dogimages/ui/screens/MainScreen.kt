@@ -3,6 +3,7 @@ package br.com.matheusxreis.dogimages.ui.screens
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +29,7 @@ import br.com.matheusxreis.dogimages.ui.components.MyButton
 import br.com.matheusxreis.dogimages.ui.viewmodels.MainViewModel
 import coil.compose.AsyncImage
 import br.com.matheusxreis.dogimages.R
+import br.com.matheusxreis.dogimages.ui.components.MyDialog
 import br.com.matheusxreis.dogimages.ui.providers.NotificationLocalOf
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -45,6 +48,10 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
         mutableStateOf(false)
     }
     var alreadySaved by remember {
+        mutableStateOf(false)
+    }
+
+    var dialogState by remember {
         mutableStateOf(false)
     }
 
@@ -100,7 +107,9 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
                             .shadow(2.dp)
                             .clip(
                                 RoundedCornerShape(7.dp)
-                            )
+                            ).clickable {
+                                dialogState = true
+                            }
                     )
                 }else {
                     if(isConnected) {
@@ -150,5 +159,38 @@ fun MainScreen(mainViewModel: MainViewModel = viewModel()) {
             }
         }
 
+
+
+        MyDialog(visible = dialogState, onDismissRequest = { dialogState = false }) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(horizontal = 2.dp)
+                    .background(color = Color.Transparent)
+                    .clickable { dialogState = false }
+            ) {
+                AsyncImage(
+                    model = actualImageUrl,
+                    contentDescription = "",
+                    modifier = Modifier.fillMaxWidth(1f)
+                )
+                Column(
+                    modifier = Modifier.fillMaxWidth(1f)
+                ) {
+
+                    if(!alreadySaved){
+                        MyButton(onClick = { saveImage() },
+                            text = if(savingError) stringResource(id = R.string.try_again) else stringResource(id = R.string.save),
+                            icon = if(savingError) Icons.Rounded.Refresh else Icons.Outlined.Favorite,
+                            enabled = true
+                        )
+                    }
+
+
+                }
+
+            }
+        }
     }
 }
