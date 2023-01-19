@@ -1,6 +1,7 @@
 package br.com.matheusxreis.dogimages.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
@@ -34,7 +35,7 @@ fun MyButton(
         if(loading){
             CircularProgressIndicator(
                 color = MaterialTheme.colorScheme.background,
-                modifier = Modifier.width(30.dp)
+                modifier = Modifier.width(24.dp).height(24.dp)
             );
         }else {
             Icon(icon, contentDescription = "", tint = MaterialTheme.colorScheme.background)
