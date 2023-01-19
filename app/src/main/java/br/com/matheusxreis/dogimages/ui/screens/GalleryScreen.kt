@@ -1,6 +1,5 @@
 package br.com.matheusxreis.dogimages.ui.screens
 
-import android.app.Activity
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
@@ -37,6 +36,7 @@ import androidx.compose.ui.window.Dialog
 import br.com.matheusxreis.dogimages.domain.entities.Image
 import br.com.matheusxreis.dogimages.ui.components.MyButton
 import br.com.matheusxreis.dogimages.R
+import br.com.matheusxreis.dogimages.ui.components.MyDialog
 import br.com.matheusxreis.dogimages.ui.providers.NotificationLocalOf
 import kotlinx.coroutines.launch
 
@@ -124,53 +124,55 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                         }
                     }
 
-                    if (dialogState) {
-                        Dialog(onDismissRequest = { dialogState = false }) {
+                    MyDialog(
+                        visible = dialogState,
+                        onDismissRequest = { dialogState = false })
+                    {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .padding(horizontal = 2.dp)
+                                .background(color = Color.Transparent)
+                                .clickable { dialogState = false }
+                        ) {
+                            AsyncImage(
+                                model = actualImage!!.url,
+                                contentDescription = "",
+                                modifier = Modifier.fillMaxWidth(1f)
+                            )
                             Column(
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier
-                                    .padding(horizontal = 2.dp)
-                                    .background(color = Color.Transparent)
-                                    .clickable { dialogState = false }
+                                modifier = Modifier.fillMaxWidth(1f)
                             ) {
-                                AsyncImage(
-                                    model = actualImage!!.url,
-                                    contentDescription = "",
-                                    modifier = Modifier.fillMaxWidth(1f)
+
+
+                                MyButton(
+                                    onClick = {
+                                        galleryViewModel.removeImage(actualImage!!.id); dialogState =
+                                        false
+                                    },
+                                    text = stringResource(id = R.string.delete),
+                                    icon = Icons.Rounded.Delete,
+                                    color = MaterialTheme.colorScheme.error,
+                                    enabled = true
                                 )
-                                Column(
-                                    modifier = Modifier.fillMaxWidth(1f)
-                                ) {
-
-
-                                    MyButton(
-                                        onClick = {
-                                            galleryViewModel.removeImage(actualImage!!.id); dialogState =
-                                            false
-                                        },
-                                        text = stringResource(id = R.string.delete),
-                                        icon = Icons.Rounded.Delete,
-                                        color = MaterialTheme.colorScheme.error,
-                                        enabled = true
-                                    )
-                                    MyButton(
-                                        onClick = {
-                                            downloadImage(actualImage!!.url)
-                                        },
-                                        text = "Download",
-                                        loading = downloadingImage == true,
-                                        icon = null,
-                                        enabled = true
-                                    )
-
-                                }
+                                MyButton(
+                                    onClick = {
+                                        downloadImage(actualImage!!.url)
+                                    },
+                                    text = "Download",
+                                    loading = downloadingImage == true,
+                                    icon = null,
+                                    enabled = true
+                                )
 
                             }
 
-
                         }
+
+
                     }
+
                 }else {
                     Column(modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
