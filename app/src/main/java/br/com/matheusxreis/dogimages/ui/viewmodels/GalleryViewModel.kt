@@ -86,7 +86,7 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
                 val notification = NotificationHelper(getApplication<Application>().applicationContext);
                 val channelId = "DOWNLOAD_CHANNEL_ID"
                 notification.createNotificationChannel(channelId);
-                notification.dispareNotification(channelId, "Download", "Download from ${nameFile.slice(0..10)}... was finished.");
+                notification.dispareNotification(channelId, "Download Finished", "Download of the dog image: ${nameFile.slice(0..10)}... was finished.");
                 downloading = false
             }
 
