@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     Scaffold(
                         bottomBar = {
                             BottomNavigation(
-                                backgroundColor = MaterialTheme.colorScheme.primary
+                                backgroundColor = MaterialTheme.colorScheme.background
                             ){
                                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                                 val currentDestination = navBackStackEntry?.destination
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                                                     imageVector = screen.icon,
                                                     contentDescription = null,
                                                     modifier = Modifier.size(30.dp),
-                                                    tint = if(isCurrentDestination) MaterialTheme.colorScheme.onSecondary else Color.LightGray)}
+                                                    tint = if(isCurrentDestination) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground)}
                                             }
                                       ,
                                         selectedContentColor = MaterialTheme.colorScheme.onPrimary,
