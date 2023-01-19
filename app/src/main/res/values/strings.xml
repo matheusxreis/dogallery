@@ -12,4 +12,7 @@
     <string name="amount_of_puppies">Amount of puppies saved</string>
     <string name="you_didnt_favorite">"You didn't favorite any puppy yet"</string>
     <string name="refresh">Refresh</string>
+    <string name="download">Download</string>
+    <string name="toast_download_success">Download was a success</string>
+    <string name="toast_download_error">Download failed</string>
 </resources>

@@ -77,14 +77,14 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
             if(downloadingImage != null && downloadingImage != true){
                 Toast.makeText(
                     context,
-                    "Download was a success",
+                    R.string.toast_download_success,
                     Toast.LENGTH_LONG
                 ).show()
             }
             else if(downloadingImage == null){
                 Toast.makeText(
                     context,
-                    "Download failed",
+                    R.string.toast_download_error,
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -160,7 +160,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                                     onClick = {
                                         downloadImage(actualImage!!.url)
                                     },
-                                    text = "Download",
+                                    text = stringResource(id = R.string.download),
                                     loading = downloadingImage == true,
                                     icon = null,
                                     enabled = true
