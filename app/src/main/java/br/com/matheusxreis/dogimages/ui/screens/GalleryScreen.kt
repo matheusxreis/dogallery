@@ -21,8 +21,11 @@ import br.com.matheusxreis.dogimages.ui.viewmodels.GalleryViewModel
 import coil.compose.AsyncImage
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Refresh
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -157,7 +160,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
                                         },
                                         text = "Download",
                                         loading = downloadingImage == true,
-                                        icon = Icons.Outlined.ArrowDropDown,
+                                        icon = null,
                                         enabled = true
                                     )
 
