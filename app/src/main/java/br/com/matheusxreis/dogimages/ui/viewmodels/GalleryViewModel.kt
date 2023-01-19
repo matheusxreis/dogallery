@@ -18,6 +18,7 @@ import br.com.matheusxreis.dogimages.domain.useCases.implementations.GetImagesFr
 import br.com.matheusxreis.dogimages.domain.useCases.implementations.RemoveImageFromStorageUseCase
 import br.com.matheusxreis.dogimages.helpers.NotificationHelper
 import br.com.matheusxreis.dogimages.helpers.NetworkHelper
+import br.com.matheusxreis.dogimages.utils.RandomNameImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -72,11 +73,12 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
 
     fun downloadImage(url:String){
         downloading = true
+        val nameFile = RandomNameImage.generate(url)
 
         viewModelScope.launch(Dispatchers.Default) {
             val result = downloadImageUseCase.execute(
                 url,
-                "${(2..20000).random()}"
+                nameFile
             )
             if(!result){
                 downloading = null
@@ -84,7 +86,7 @@ class GalleryViewModel(application: Application): AndroidViewModel(application) 
                 val notification = NotificationHelper(getApplication<Application>().applicationContext);
                 val channelId = "DOWNLOAD_CHANNEL_ID"
                 notification.createNotificationChannel(channelId);
-                notification.dispareNotification(channelId, "Download", "Imagem de cachorrinho baixada");
+                notification.dispareNotification(channelId, "Download", "Download from ${nameFile.slice(0..10)}... was finished.");
                 downloading = false
             }
 
