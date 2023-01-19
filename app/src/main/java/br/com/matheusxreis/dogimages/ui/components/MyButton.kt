@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 fun MyButton(
     onClick: ()->Unit,
     text: String,
-    icon: ImageVector,
+    icon: ImageVector?,
     enabled: Boolean,
     loading: Boolean = false,
     secondary: Boolean = false,
@@ -38,7 +38,9 @@ fun MyButton(
                 modifier = Modifier.width(24.dp).height(24.dp)
             );
         }else {
-            Icon(icon, contentDescription = "", tint = MaterialTheme.colorScheme.background)
+            if (icon != null) {
+                Icon(icon, contentDescription = "", tint = MaterialTheme.colorScheme.background)
+            }
             Text(text = text.uppercase())
         }
 
