@@ -1,7 +1,12 @@
 package br.com.matheusxreis.dogallery.ui.screens
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.core.app.ActivityCompat
 import br.com.matheusxreis.dogallery.domain.entities.Image
 import br.com.matheusxreis.dogallery.ui.components.MyButton
 import br.com.matheusxreis.dogallery.R
@@ -48,17 +54,30 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
     var initialRender by remember {
         mutableStateOf(true)
     }
-
     val downloadingImage = galleryViewModel.downloading
     val notifications = NotificationLocalOf.current
     val context = LocalContext.current
+    val requestPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()){
+            if(it){
+                galleryViewModel.downloadImage(actualImage!!.url)
+            }
+    }
 
     fun openDialog(it:Image){
         actualImage = Image(it.id, it.url, it.savedAt)
         dialogState = true
     }
     fun downloadImage(url:String){
-        galleryViewModel.downloadImage(url)
+       val isGranted = ActivityCompat.checkSelfPermission(
+           context as Activity,
+           Manifest.permission.WRITE_EXTERNAL_STORAGE
+       ) == PackageManager.PERMISSION_GRANTED
+        if(isGranted){
+            galleryViewModel.downloadImage(url)
+        }else {
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
     }
 
     LaunchedEffect(Unit) {
@@ -85,9 +104,7 @@ fun GalleryScreen(galleryViewModel: GalleryViewModel = viewModel()){
         initialRender = false;
 
     }
-
-
-        when (galleryViewModel.isConnected){
+    when (galleryViewModel.isConnected){
             true ->   Column(modifier = Modifier.fillMaxWidth()) {
 
                 if(images.isNotEmpty()) {
