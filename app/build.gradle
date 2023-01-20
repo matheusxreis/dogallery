@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'br.com.matheusxreis.dogimages'
+    namespace 'br.com.matheusxreis.dogallery'
     compileSdk 33
 
     defaultConfig {
-        applicationId "br.com.matheusxreis.dogimages"
+        applicationId "br.com.matheusxreis.dogallery"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -19,7 +19,7 @@ android {
             useSupportLibrary true
         }
     }
-
+Images
     buildTypes {
         release {
             minifyEnabled false
